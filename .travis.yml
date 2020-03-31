@@ -1,0 +1,30 @@
+language: python
+python:
+  - "3.6"
+
+env:
+  - DJANGO_VERSION=3.0.4
+
+install:
+  - pip install -r backend/requirements.txt
+  - pip install -q Django==$DJANGO_VERSION
+
+before_script:
+  - cd frontend
+  - npm i
+  - cd ..
+
+script:
+  - set -e
+
+  # Frontend
+  - cd frontend
+  - npm run lint
+#  - npm run test
+  - npm run build
+  - cd ..
+
+  # Backend
+  - cd backend
+  - python ./manage.py test
+  - cd ..
